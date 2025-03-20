@@ -1,17 +1,21 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import { PedidosModule } from './pedidos/pedidos.module';
 import { Pedido } from './pedidos/pedido.entity';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'admin',
-      password: 'admin',
-      database: 'lojadb',
+      host: process.env.DB_HOST ||'localhost',
+      port: Number(process.env.DB_PORT) || 3306,
+      username: process.env.DB_USER || 'admin',
+      password: process.env.DB_PASSWORD || 'admin',
+      database: process.env.DB_NAME || 'lojadb',
       entities: [Pedido],
       synchronize: true, 
       autoLoadEntities: true,
