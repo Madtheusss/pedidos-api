@@ -6,14 +6,15 @@ import { Pedido } from './pedidos/pedido.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'postgres',
+      type: 'mysql',
       host: 'localhost',
-      port: 5432,
-      username: 'apiPedidos',
+      port: 3306,
+      username: 'admin',
       password: 'admin',
-      database: 'restDB',
+      database: 'lojadb',
       entities: [Pedido],
       synchronize: true, 
+      autoLoadEntities: true,
     }),
     PedidosModule,
   ],
