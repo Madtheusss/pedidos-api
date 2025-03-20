@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 import { PedidosModule } from './pedidos/pedidos.module';
 import { Pedido } from './pedidos/pedido.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+      isGlobal: true,
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -16,10 +17,11 @@ import { Pedido } from './pedidos/pedido.entity';
       username: process.env.DB_USER || 'admin',
       password: process.env.DB_PASSWORD || 'admin',
       database: process.env.DB_NAME || 'lojadb',
-      entities: [Pedido],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, 
       autoLoadEntities: true,
     }),
+    AuthModule,
     PedidosModule,
   ],
 })
